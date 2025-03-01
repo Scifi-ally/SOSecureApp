@@ -1012,16 +1012,8 @@
                             if (doc.exists) {
                                 const userData = doc.data();
                                 const emergencyContactIds = userData.emergencyContactIds || [];
-                                const phoneContacts = userData.emergencyContacts || [];
-                                const message = encodeURIComponent(`Emergency: ${userData.name}'s location at ${new Date().toLocaleString()}: ${locationUrl}`);
 
-                                // Notify phone contacts via WhatsApp
-                                phoneContacts.forEach(phone => {
-                                    const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-                                    window.open(whatsappUrl, '_blank');
-                                });
-
-                                // Log SOS event with emergency contacts
+                                // Log SOS event with emergency contacts (no WhatsApp)
                                 db.collection('sosEvents').add({
                                     userId: user.uid,
                                     senderName: userData.name,
@@ -1030,7 +1022,7 @@
                                     active: true,
                                     emergencyContactIds: emergencyContactIds
                                 }).then(() => {
-                                    showPopup('SOS sent to all emergency contacts!');
+                                    showPopup('SOS sent to linked emergency contacts!');
                                 }).catch((error) => showPopup('Error logging SOS event: ' + error.message));
                             }
                         });
@@ -1040,7 +1032,7 @@
         }
 
         document.querySelector('.sos-btn').addEventListener('click', () => {
-            showPopup('SOS Alert Sent! Opening WhatsApp for phone contacts... (Please press "Send" in WhatsApp)');
+            showPopup('SOS Alert Sent to linked emergency contacts!');
             if (!locationInterval) {
                 shareLocation(); // Share immediately
                 locationInterval = setInterval(shareLocation, LOCATION_UPDATE_INTERVAL); // Share every 30 seconds
