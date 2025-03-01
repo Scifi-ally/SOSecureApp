@@ -1013,7 +1013,7 @@
                                 const userData = doc.data();
                                 const emergencyContactIds = userData.emergencyContactIds || [];
 
-                                // Log SOS event with emergency contacts (no WhatsApp)
+                                // Log SOS event with emergency contacts
                                 db.collection('sosEvents').add({
                                     userId: user.uid,
                                     senderName: userData.name,
