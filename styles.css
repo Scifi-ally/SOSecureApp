@@ -9,6 +9,14 @@
     --text: #000000;
     --accent: #000000;
     --glass: rgba(255, 255, 255, 0.3);
+    --boxy-background: #1A1A1A;
+    --boxy-text: #FFFFFF;
+    --boxy-accent: #808080;
+    --boxy-highlight: #D3D3D3;
+    --boxy-shadow-dark: #0F0F0F;
+    --boxy-shadow-light: #2A2A2A;
+    --retro-red: #FF0000;
+    --retro-dark-red: #CC0000;
 }
 body {
     background: var(--background);
@@ -18,7 +26,7 @@ body {
     font-size: 1rem;
 }
 .fade-out-except-enlarging * {
-    transition: opacity 1s ease; /* Reduced duration for fade */
+    transition: opacity 1s ease;
     opacity: 1;
 }
 .fade-out-except-enlarging.active * {
@@ -40,19 +48,31 @@ header {
     transition: background 0.3s ease;
 }
 header i {
-    font-size: 1.5rem;
-    color: var(--accent);
-    margin-right: 0.75rem;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #808080, #000000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-right: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: shieldPulse 2s infinite ease-in-out;
 }
 header h1 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    letter-spacing: 0.125rem;
+    letter-spacing: 0.15rem;
     color: var(--text);
+    text-transform: uppercase;
+    animation: textGlow 3s infinite alternate;
 }
-header:hover i {
-    transform: rotate(360deg);
+@keyframes shieldPulse {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.05); filter: brightness(1.2); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+@keyframes textGlow {
+    0% { text-shadow: 0 0 2px rgba(0, 0, 0, 0.2); }
+    100% { text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); }
 }
 .page {
     display: none;
@@ -66,40 +86,48 @@ header:hover i {
     opacity: 1;
 }
 .sos-btn {
-    background: red;
-    border: none;
-    border-radius: 50%;
-    width: 8rem;
-    height: 8rem;
-    font-size: 1.5rem;
-    font-weight: 700;
+    background: var(--retro-red);
+    border: 4px solid var(--text);
+    border-radius: 4.8rem;
+    width: 9.6rem;
+    height: 9.6rem;
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: 'Courier New', Courier, monospace;
     color: var(--background);
+    text-transform: uppercase;
     cursor: pointer;
     margin: 2rem auto;
     display: grid;
     place-items: center;
     position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease;
+    box-shadow: 6px 6px 0 var(--boxy-shadow-dark);
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.sos-btn:hover {
+    transform: translate(2px, 2px);
+    background: var(--retro-dark-red);
+    box-shadow: 3px 3px 0 var(--boxy-shadow-dark);
+}
+.sos-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0 var(--boxy-shadow-dark);
 }
 .sos-btn::before {
     content: '';
     position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-    top: -50%;
-    left: -50%;
-    animation: ripple 4s infinite;
-    opacity: 0.6;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+    top: 0;
+    left: 0;
+    animation: retroGlow 2s infinite ease-in-out;
+    pointer-events: none;
 }
-.sos-btn:hover {
-    transform: scale(1.05) rotate(2deg);
-}
-@keyframes ripple {
-    0% { transform: scale(0.8); opacity: 0; }
-    50% { opacity: 0.3; }
-    100% { transform: scale(1.2); opacity: 0; }
+@keyframes retroGlow {
+    0% { opacity: 0.3; transform: translateY(-10%); }
+    50% { opacity: 0.5; transform: translateY(0); }
+    100% { opacity: 0.3; transform: translateY(10%); }
 }
 #stop-sharing-btn {
     background: #ff4444;
@@ -137,7 +165,7 @@ header:hover i {
     overflow: hidden;
     transition: transform 0.4s ease;
     transform-origin: center;
-    z-index: 10; /* Ensure it stays above fading content */
+    z-index: 10;
 }
 .feature-card:hover {
     transform: scale(1.05);
@@ -146,12 +174,8 @@ header:hover i {
     animation: expandRefined 1s ease-in-out forwards;
 }
 @keyframes expandRefined {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1.2, 3); /* Slight X-scale with controlled Y-scale */
-    }
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2, 3); }
 }
 .feature-card::before {
     content: '';
@@ -275,6 +299,134 @@ header:hover i {
 .switch-link a:hover {
     text-decoration: underline;
 }
+#signup .form-container,
+#signin .form-container,
+#profile .profile-container {
+    background: var(--boxy-background);
+    border: 2px solid var(--boxy-accent);
+    border-radius: 0;
+    padding: 2rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 30rem;
+    box-shadow: 8px 8px 0 var(--boxy-shadow-dark), -8px -8px 0 var(--boxy-shadow-light);
+    transition: transform 0.3s ease;
+}
+#signup .form-container:hover,
+#signin .form-container:hover,
+#profile .profile-container:hover {
+    transform: translate(4px, 4px);
+    box-shadow: 4px 4px 0 var(--boxy-shadow-dark), -4px -4px 0 var(--boxy-shadow-light);
+}
+#signup .form-container h2,
+#signin .form-container h2,
+#profile .profile-container h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--boxy-text);
+    text-transform: uppercase;
+    text-align: center;
+}
+#signup .form-container input,
+#signin .form-container input,
+#profile .profile-field input {
+    width: 100%;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    border: 2px solid var(--boxy-accent);
+    border-radius: 0;
+    background: var(--boxy-background);
+    color: var(--boxy-text);
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+#signup .form-container input:focus,
+#signin .form-container input:focus,
+#profile .profile-field input:focus {
+    outline: none;
+    border-color: var(--boxy-highlight);
+}
+#signup .form-container input::placeholder,
+#signin .form-container input::placeholder,
+#profile .profile-field input::placeholder {
+    color: var(--boxy-highlight);
+    opacity: 0.6;
+}
+#signup .form-container button,
+#signin .form-container button,
+#profile .profile-field button,
+#profile .profile-action button {
+    background: var(--boxy-accent);
+    color: var(--boxy-text);
+    border: 2px solid var(--boxy-highlight);
+    padding: 1rem;
+    width: 100%;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    box-shadow: 4px 4px 0 var(--boxy-shadow-dark), -4px -4px 0 var(--boxy-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+#signup .form-container button:hover,
+#signin .form-container button:hover,
+#profile .profile-field button:hover,
+#profile .profile-action button:hover {
+    background: var(--boxy-highlight);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--boxy-shadow-dark), -2px -2px 0 var(--boxy-shadow-light);
+}
+#signup .switch-link,
+#signin .switch-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--boxy-highlight);
+}
+#signup .switch-link a,
+#signin .switch-link a {
+    color: var(--boxy-text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+#signup .switch-link a:hover,
+#signin .switch-link a:hover {
+    color: var(--boxy-accent);
+}
+#profile .profile-container p {
+    font-size: 0.95rem;
+    color: var(--boxy-text);
+    margin: 0.75rem 0;
+    padding: 0.75rem;
+    background: var(--boxy-background);
+    border: 1px solid var(--boxy-accent);
+    border-radius: 0;
+}
+#profile .profile-field {
+    margin-bottom: 0.75rem;
+}
+#profile #signout-btn {
+    background: transparent;
+    color: var(--boxy-highlight);
+    border: 2px solid var(--boxy-accent);
+    padding: 1rem 1.5rem;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0.75rem 0;
+    width: 100%;
+    box-shadow: 4px 4px 0 var(--boxy-shadow-dark), -4px -4px 0 var(--boxy-shadow-light);
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+#profile #signout-btn:hover {
+    background: var(--boxy-accent);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--boxy-shadow-dark), -2px -2px 0 var(--boxy-shadow-light);
+}
 #map {
     height: 60vh;
     width: 90%;
@@ -286,155 +438,54 @@ header:hover i {
 #map:hover {
     transform: scale(1.01);
 }
-.profile-container {
-    background: var(--glass);
-    backdrop-filter: blur(0.75rem);
-    border: 0.0625rem solid var(--accent);
-    padding: 1.5rem;
-    border-radius: 1.25rem;
-    margin: 2rem auto;
-    width: 90%;
-    max-width: 25rem;
-    transition: transform 0.3s ease;
-}
-.profile-container:hover {
-    transform: translateY(-0.125rem);
-}
-.profile-container h2 {
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--text);
-}
-.profile-container p {
-    font-size: 0.875rem;
-    color: var(--text);
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 0.5rem;
-    transition: background 0.3s ease;
-}
-.profile-container p:hover {
-    background: rgba(255, 255, 255, 0.6);
-}
-.profile-field {
-    margin-bottom: 0.5rem;
-}
-.profile-field input {
-    width: 100%;
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-    border: none;
-    border-radius: 0.625rem;
-    background: rgba(255, 255, 255, 0.5);
-    color: var(--text);
-    transition: all 0.3s ease;
-}
-.profile-field input:focus {
-    background: rgba(255, 255, 255, 0.7);
-    outline: none;
-}
-.profile-field button {
-    background: var(--accent);
-    color: var(--background);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.625rem;
-    cursor: pointer;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-left: 0.5rem;
-    transition: all 0.3s ease;
-}
-.profile-field button:hover {
-    transform: translateY(-0.125rem);
-}
-.profile-action button {
-    background: var(--accent);
-    color: var(--background);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.625rem;
-    cursor: pointer;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin: 0.5rem 0;
-    width: 100%;
-}
-.profile-action button:hover {
-    transform: translateY(-0.125rem);
-}
-#signout-btn {
-    background: transparent;
-    color: var(--accent);
-    border: 0.125rem solid var(--accent);
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.625rem;
-    cursor: pointer;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin: 0.5rem 0;
-    width: 100%;
-}
-#signout-btn:hover {
-    background: var(--accent);
-    color: var(--background);
-    transform: translateY(-0.125rem);
-}
 nav {
     position: fixed;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--glass);
-    backdrop-filter: blur(0.75rem);
-    border: 0.0625rem solid var(--accent);
-    border-radius: 3.125rem;
-    padding: 0.5rem 1rem;
+    bottom: 0.6rem;
+    left: 0;
+    transform: none;
+    background: var(--boxy-background);
+    border: 2px solid var(--boxy-accent);
+    border-radius: 0;
+    padding: 0.3rem 0.6rem;
     display: flex;
-    gap: 1rem;
+    gap: 0.6rem;
     z-index: 100;
-    width: 90%;
-    max-width: 20rem;
+    width: 100%;
+    max-width: none;
     justify-content: space-around;
+    box-shadow: 3.6px 3.6px 0 var(--boxy-shadow-dark), -3.6px -3.6px 0 var(--boxy-shadow-light);
     transition: transform 0.3s ease;
 }
 nav:hover {
-    transform: translateX(-50%) translateY(-0.125rem);
+    transform: translateY(2.4px);
+    box-shadow: 2.4px 2.4px 0 var(--boxy-shadow-dark), -2.4px -2.4px 0 var(--boxy-shadow-light);
 }
 nav button {
     background: none;
     border: none;
-    color: var(--text);
-    font-size: 0.75rem;
+    color: var(--boxy-highlight);
+    font-size: 0.72rem;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
+    gap: 0.24rem;
+    padding: 0.3rem;
+    text-transform: uppercase;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 nav button i {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     transition: transform 0.3s ease;
 }
-nav button:hover {
-    color: var(--accent);
-    transform: translateY(-0.1875rem);
-}
-nav button:hover i {
-    transform: scale(1.1);
-}
+nav button:hover,
 nav button.active {
-    color: var(--accent);
+    color: var(--boxy-text);
+    transform: translateY(-1.2px);
 }
+nav button:hover i,
 nav button.active i {
-    animation: glowPulse 1.5s infinite;
+    transform: scale(1.1);
 }
 nav button::before {
     content: '';
@@ -442,14 +493,13 @@ nav button::before {
     bottom: 0;
     left: 50%;
     width: 0;
-    height: 0.1875rem;
-    background: var(--accent);
-    transition: all 0.4s ease;
+    height: 1.2px;
+    background: var(--boxy-highlight);
+    transition: width 0.3s ease;
     transform: translateX(-50%);
-    border-radius: 0.125rem;
 }
 nav button.active::before {
-    width: 70%;
+    width: 50%;
 }
 #route-instructions {
     background: var(--glass);
@@ -548,7 +598,7 @@ nav button.active::before {
 #popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(255,  disbursement255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     display: grid;
     place-items: center;
     z-index: 1000;
@@ -566,7 +616,7 @@ nav button.active::before {
     border-radius: 1.25rem;
     padding: 1.5rem;
     width: 90%;
-    max-width: 20rem;
+    max-width: 25rem; /* Increased for SOS popup */
     transform: scale(0.8);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 0.0625rem solid var(--accent);
@@ -576,9 +626,31 @@ nav button.active::before {
 }
 #popup-message {
     font-size: 0.9375rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--text);
     line-height: 1.5;
+}
+#popup-box.sos-alert {
+    background: #ffe6e6; /* Light red background for SOS */
+    border-color: var(--retro-red);
+}
+#popup-box.sos-alert h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--retro-red);
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+#popup-box.sos-alert p {
+    font-size: 0.9375rem;
+    color: var(--text);
+    margin: 0.5rem 0;
+}
+#popup-box.sos-alert .popup-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: center;
 }
 #popup-close-btn {
     background: var(--accent);
@@ -590,12 +662,27 @@ nav button.active::before {
     font-size: 0.9375rem;
     font-weight: 600;
     transition: all 0.3s ease;
-    width: 100%;
+    width: 48%; /* Adjusted for side-by-side buttons */
 }
 #popup-close-btn:hover {
     transform: scale(1.05);
 }
-/* Twitter-inspired Community Page Styles */
+#popup-navigate-btn {
+    background: var(--retro-red);
+    color: var(--background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 48%; /* Adjusted for side-by-side buttons */
+}
+#popup-navigate-btn:hover {
+    transform: scale(1.05);
+    background: var(--retro-dark-red);
+}
 #community-page .community-content {
     max-width: 600px;
     margin: 0 auto;
