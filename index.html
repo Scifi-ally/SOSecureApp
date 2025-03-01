@@ -997,40 +997,43 @@
 
             getCurrentLocation((location) => {
                 const locationUrl = `https://www.google.com/maps?q=${location.lat},${location.lng}`;
-                db.collection('locationShares').doc(user.uid).set({
+                const sosData = {
                     location: location,
                     sharedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    active: true
-                }).then(() => {
-                    db.collection('users').doc(user.uid).get().then((doc) => {
-                        if (doc.exists) {
-                            const userData = doc.data();
-                            const phoneContacts = userData.emergencyContacts || [];
-                            const emergencyContactIds = userData.emergencyContactIds || [];
-                            const message = encodeURIComponent(`Emergency: ${userData.name}'s location at ${new Date().toLocaleString()}: ${locationUrl}`);
+                    active: true,
+                    userId: user.uid
+                };
 
-                            // Notify phone contacts via WhatsApp
-                            phoneContacts.forEach(phone => {
-                                const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-                                window.open(whatsappUrl, '_blank');
-                            });
+                // Update location share
+                db.collection('locationShares').doc(user.uid).set(sosData)
+                    .then(() => {
+                        // Store SOS event
+                        db.collection('sosEvents').add({
+                            userId: user.uid,
+                            location: location,
+                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                            active: true
+                        }).then(() => {
+                            db.collection('users').doc(user.uid).get().then((doc) => {
+                                if (doc.exists) {
+                                    const userData = doc.data();
+                                    const phoneContacts = userData.emergencyContacts || [];
+                                    const message = encodeURIComponent(`Emergency: ${userData.name}'s location at ${new Date().toLocaleString()}: ${locationUrl}`);
 
-                            // Notify linked users via in-app simulation (console log)
-                            emergencyContactIds.forEach(contactId => {
-                                db.collection('users').doc(contactId).get().then(contactDoc => {
-                                    if (contactDoc.exists) {
-                                        const contactData = contactDoc.data();
-                                        console.log(`In-app notification to ${contactData.name} (${contactData.email}): ${message}`);
-                                    }
-                                });
-                            });
+                                    // Notify phone contacts via WhatsApp
+                                    phoneContacts.forEach(phone => {
+                                        const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+                                        window.open(whatsappUrl, '_blank');
+                                    });
 
-                            showPopup('SOS sent to all emergency contacts!');
-                        } else {
-                            showPopup('No emergency contacts found.');
-                        }
-                    }).catch((error) => showPopup('Error fetching user data: ' + error.message));
-                }).catch((error) => showPopup('Error sharing location: ' + error.message));
+                                    showPopup('SOS sent to all emergency contacts!');
+                                } else {
+                                    showPopup('No emergency contacts found.');
+                                }
+                            }).catch((error) => showPopup('Error fetching user data: ' + error.message));
+                        }).catch((error) => showPopup('Error logging SOS event: ' + error.message));
+                    })
+                    .catch((error) => showPopup('Error sharing location: ' + error.message));
             });
         }
 
@@ -1049,7 +1052,18 @@
                 locationInterval = null;
                 if (auth.currentUser) {
                     db.collection('locationShares').doc(auth.currentUser.uid).update({ active: false })
-                        .then(() => showPopup('Location sharing stopped.'))
+                        .then(() => {
+                            db.collection('sosEvents')
+                                .where('userId', '==', auth.currentUser.uid)
+                                .where('active', '==', true)
+                                .get()
+                                .then((querySnapshot) => {
+                                    querySnapshot.forEach(doc => {
+                                        doc.ref.update({ active: false });
+                                    });
+                                    showPopup('Location sharing stopped.');
+                                });
+                        })
                         .catch((error) => showPopup('Error stopping sharing: ' + error.message));
                 }
                 document.getElementById('stop-sharing-btn').style.display = 'none';
@@ -1257,6 +1271,17 @@
                 locationInterval = null;
                 if (auth.currentUser) {
                     db.collection('locationShares').doc(auth.currentUser.uid).update({ active: false })
+                        .then(() => {
+                            db.collection('sosEvents')
+                                .where('userId', '==', auth.currentUser.uid)
+                                .where('active', '==', true)
+                                .get()
+                                .then((querySnapshot) => {
+                                    querySnapshot.forEach(doc => {
+                                        doc.ref.update({ active: false });
+                                    });
+                                });
+                        })
                         .catch((error) => showPopup('Error stopping location sharing: ' + error.message));
                 }
                 document.getElementById('stop-sharing-btn').style.display = 'none';
@@ -1270,11 +1295,42 @@
                 .catch((error) => showPopup('Error signing out: ' + error.message));
         }
 
+        // Listen for SOS events for linked emergency contacts
+        function listenForSosEvents(userId) {
+            db.collection('users').where('emergencyContactIds', 'array-contains', userId).get()
+                .then((querySnapshot) => {
+                    const monitoredUserIds = querySnapshot.docs.map(doc => doc.id);
+                    monitoredUserIds.forEach(monitoredUserId => {
+                        db.collection('sosEvents')
+                            .where('userId', '==', monitoredUserId)
+                            .where('active', '==', true)
+                            .orderBy('timestamp', 'desc')
+                            .limit(1)
+                            .onSnapshot((snapshot) => {
+                                snapshot.docChanges().forEach((change) => {
+                                    if (change.type === 'added') {
+                                        const sosData = change.doc.data();
+                                        db.collection('users').doc(sosData.userId).get().then((userDoc) => {
+                                            if (userDoc.exists) {
+                                                const userName = userDoc.data().name;
+                                                const locationUrl = `https://www.google.com/maps?q=${sosData.location.lat},${sosData.location.lng}`;
+                                                showPopup(`SOS Alert from ${userName}! Location: ${locationUrl}`);
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                    });
+                })
+                .catch((error) => console.error('Error setting up SOS listener:', error));
+        }
+
         auth.onAuthStateChanged((user) => {
             if (user) {
                 document.getElementById('navbar').style.display = 'flex';
                 showPage('home');
                 loadUserProfile(user.uid);
+                listenForSosEvents(user.uid); // Start listening for SOS events
                 db.collection('locationShares').doc(user.uid).get().then((doc) => {
                     if (doc.exists && doc.data().active) {
                         shareLocation();
