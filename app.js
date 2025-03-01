@@ -423,4 +423,4 @@ let isMapInitialized = false;
         window.onload = function() {
             setTimeout(() => document.getElementById('loading-screen').style.display = 'none', 2500);
         };
-    </script>
+    
