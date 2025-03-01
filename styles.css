@@ -1,0 +1,691 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+:root {
+    --background: #FFFFFF;
+    --text: #000000;
+    --accent: #000000;
+    --glass: rgba(255, 255, 255, 0.3);
+}
+body {
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-size: 1rem;
+}
+.fade-out-except-enlarging * {
+    transition: opacity 1s ease; /* Reduced duration for fade */
+    opacity: 1;
+}
+.fade-out-except-enlarging.active * {
+    opacity: 0;
+}
+.fade-out-except-enlarging.active .feature-card.enlarging {
+    opacity: 1;
+}
+header {
+    background: var(--background);
+    padding: 1rem 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--accent);
+    transition: background 0.3s ease;
+}
+header i {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-right: 0.75rem;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+header h1 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.125rem;
+    color: var(--text);
+}
+header:hover i {
+    transform: rotate(360deg);
+}
+.page {
+    display: none;
+    padding: 4rem 5% 6rem;
+    min-height: 100vh;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+.page.active {
+    display: block;
+    opacity: 1;
+}
+.sos-btn {
+    background: red;
+    border: none;
+    border-radius: 50%;
+    width: 8rem;
+    height: 8rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--background);
+    cursor: pointer;
+    margin: 2rem auto;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+.sos-btn::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    top: -50%;
+    left: -50%;
+    animation: ripple 4s infinite;
+    opacity: 0.6;
+}
+.sos-btn:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+@keyframes ripple {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { opacity: 0.3; }
+    100% { transform: scale(1.2); opacity: 0; }
+}
+#stop-sharing-btn {
+    background: #ff4444;
+    color: var(--background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1rem auto;
+    display: none;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+#stop-sharing-btn:hover {
+    transform: translateY(-0.125rem);
+    background: #e03c3c;
+}
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+    width: 90%;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+.feature-card {
+    background: var(--glass);
+    backdrop-filter: blur(0.5rem);
+    border: 0.0625rem solid var(--accent);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+    transform-origin: center;
+    z-index: 10; /* Ensure it stays above fading content */
+}
+.feature-card:hover {
+    transform: scale(1.05);
+}
+.feature-card.enlarging {
+    animation: expandRefined 1s ease-in-out forwards;
+}
+@keyframes expandRefined {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2, 3); /* Slight X-scale with controlled Y-scale */
+    }
+}
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, transparent 70%);
+    transform: rotate(30deg);
+    transition: all 0.6s ease;
+    z-index: -1;
+}
+.feature-card:hover::before {
+    transform: rotate(0deg) scale(1.2);
+}
+.feature-card i {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    transition: transform 0.4s ease;
+}
+.feature-card:hover i {
+    transform: scale(1.2);
+}
+.feature-card p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: transform 0.4s ease;
+}
+.feature-card:hover p {
+    transform: translateY(0.3rem);
+}
+.form-container {
+    background: var(--glass);
+    backdrop-filter: blur(0.75rem);
+    border: 0.0625rem solid var(--accent);
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 25rem;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.form-container:hover {
+    transform: translateY(-0.125rem);
+}
+.form-container h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+.form-container input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 0.625rem;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text);
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+}
+.form-container input:focus {
+    background: rgba(255, 255, 255, 0.7);
+    outline: none;
+    transform: scale(1.02);
+}
+.form-container input::placeholder {
+    color: var(--text);
+    opacity: 0.6;
+}
+.form-container button {
+    background: var(--accent);
+    color: var(--background);
+    border: none;
+    padding: 0.75rem;
+    width: 100%;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+.form-container button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+.form-container button:hover::after {
+    opacity: 1;
+    transform: scale(1.5);
+}
+.form-container button:hover {
+    transform: translateY(-0.1875rem);
+}
+.switch-link {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text);
+}
+.switch-link a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.switch-link a:hover {
+    text-decoration: underline;
+}
+#map {
+    height: 60vh;
+    width: 90%;
+    margin: 1.5rem auto;
+    border-radius: 1rem;
+    border: 0.0625rem solid var(--accent);
+    transition: transform 0.3s ease;
+}
+#map:hover {
+    transform: scale(1.01);
+}
+.profile-container {
+    background: var(--glass);
+    backdrop-filter: blur(0.75rem);
+    border: 0.0625rem solid var(--accent);
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 25rem;
+    transition: transform 0.3s ease;
+}
+.profile-container:hover {
+    transform: translateY(-0.125rem);
+}
+.profile-container h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+.profile-container p {
+    font-size: 0.875rem;
+    color: var(--text);
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0.5rem;
+    transition: background 0.3s ease;
+}
+.profile-container p:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+.profile-field {
+    margin-bottom: 0.5rem;
+}
+.profile-field input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 0.625rem;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+.profile-field input:focus {
+    background: rgba(255, 255, 255, 0.7);
+    outline: none;
+}
+.profile-field button {
+    background: var(--accent);
+    color: var(--background);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    transition: all 0.3s ease;
+}
+.profile-field button:hover {
+    transform: translateY(-0.125rem);
+}
+.profile-action button {
+    background: var(--accent);
+    color: var(--background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 0.5rem 0;
+    width: 100%;
+}
+.profile-action button:hover {
+    transform: translateY(-0.125rem);
+}
+#signout-btn {
+    background: transparent;
+    color: var(--accent);
+    border: 0.125rem solid var(--accent);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 0.5rem 0;
+    width: 100%;
+}
+#signout-btn:hover {
+    background: var(--accent);
+    color: var(--background);
+    transform: translateY(-0.125rem);
+}
+nav {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    backdrop-filter: blur(0.75rem);
+    border: 0.0625rem solid var(--accent);
+    border-radius: 3.125rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 100;
+    width: 90%;
+    max-width: 20rem;
+    justify-content: space-around;
+    transition: transform 0.3s ease;
+}
+nav:hover {
+    transform: translateX(-50%) translateY(-0.125rem);
+}
+nav button {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+nav button i {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+}
+nav button:hover {
+    color: var(--accent);
+    transform: translateY(-0.1875rem);
+}
+nav button:hover i {
+    transform: scale(1.1);
+}
+nav button.active {
+    color: var(--accent);
+}
+nav button.active i {
+    animation: glowPulse 1.5s infinite;
+}
+nav button::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0.1875rem;
+    background: var(--accent);
+    transition: all 0.4s ease;
+    transform: translateX(-50%);
+    border-radius: 0.125rem;
+}
+nav button.active::before {
+    width: 70%;
+}
+#route-instructions {
+    background: var(--glass);
+    backdrop-filter: blur(0.75rem);
+    border: 0.0625rem solid var(--accent);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin: 1.5rem auto;
+    width: 90%;
+    max-height: 15rem;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+}
+#route-instructions:hover {
+    transform: translateY(-0.125rem);
+}
+.location-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem auto;
+    width: 90%;
+    max-width: 25rem;
+}
+.location-input {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    border: 0.0625rem solid var(--accent);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+.location-input:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+.location-input i {
+    padding: 0.75rem;
+    color: var(--accent);
+    transition: transform 0.3s ease;
+}
+.location-input:hover i {
+    transform: scale(1.1);
+}
+.location-input input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0.75rem;
+    color: var(--text);
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+}
+.location-input input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+}
+.route-btn, #current-location-btn {
+    background: var(--accent);
+    color: var(--background);
+    border: none;
+    padding: 0.75rem;
+    width: 90%;
+    max-width: 25rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.4s ease;
+    margin: 0.5rem auto;
+    position: relative;
+    overflow: hidden;
+}
+.route-btn:disabled, #current-location-btn:disabled {
+    background: var(--text);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.route-btn::after, #current-location-btn::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, transparent 70%);
+    top: -50%;
+    left: -50%;
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+.route-btn:hover:not(:disabled)::after, #current-location-btn:hover:not(:disabled)::after {
+    opacity: 1;
+    transform: scale(1.5);
+}
+.route-btn:hover:not(:disabled), #current-location-btn:hover:not(:disabled) {
+    transform: translateY(-0.1875rem);
+}
+#popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,  disbursement255, 255, 0.7);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(0.25rem);
+}
+#popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+#popup-box {
+    background: var(--background);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 20rem;
+    transform: scale(0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 0.0625rem solid var(--accent);
+}
+#popup-overlay.active #popup-box {
+    transform: scale(1);
+}
+#popup-message {
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    line-height: 1.5;
+}
+#popup-close-btn {
+    background: var(--accent);
+    color: var(--background);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+#popup-close-btn:hover {
+    transform: scale(1.05);
+}
+/* Twitter-inspired Community Page Styles */
+#community-page .community-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.post-form {
+    background: var(--glass);
+    border: 0.0625rem solid var(--accent);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+.post-form:hover {
+    transform: translateY(-0.125rem);
+}
+.post-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text);
+    font-size: 0.9375rem;
+    resize: vertical;
+    min-height: 80px;
+    transition: all 0.3s ease;
+}
+.post-form textarea:focus {
+    background: rgba(255, 255, 255, 0.7);
+    outline: none;
+}
+.post-form button {
+    background: var(--accent);
+    color: var(--background);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    float: right;
+}
+.post-form button:hover {
+    transform: translateY(-0.125rem);
+}
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.post-item {
+    background: var(--glass);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 0.0625rem solid var(--accent);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.post-item:hover {
+    transform: translateY(-0.125rem);
+}
+.post-item p {
+    font-size: 0.9375rem;
+    color: var(--text);
+}
+.post-item span {
+    font-size: 0.75rem;
+    color: rgba(0, 0, 0, 0.6);
+    display: block;
+    margin-top: 0.5rem;
+}
+.post-item .remove-btn {
+    background: transparent;
+    color: red;
+    border: 1px solid red;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: none;
+}
+.post-item .remove-btn:hover {
+    background: red;
+    color: var(--background);
+    transform: translateY(-0.125rem);
+}
