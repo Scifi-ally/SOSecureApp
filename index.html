@@ -32,7 +32,7 @@
             font-size: 1rem;
         }
         .fade-out-except-enlarging * {
-            transition: opacity 0.5s ease;
+            transition: opacity 3s ease; /* Slowed to 3s */
             opacity: 1;
         }
         .fade-out-except-enlarging.active * {
@@ -169,7 +169,6 @@
             width: 90%;
             margin: 0 auto;
             padding: 1rem 0;
-            perspective: 1000px;
         }
         .feature-card {
             background: var(--glass);
@@ -180,19 +179,18 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
         .feature-card:hover {
-            transform: translateZ(1rem) rotateX(10deg) rotateY(10deg);
+            transform: scale(1.05);
             box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
         }
         .feature-card.enlarging {
-            animation: enlarge 0.5s ease forwards;
+            animation: expandHeight 3s ease forwards; /* Slowed to 3s */
         }
-        @keyframes enlarge {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.5) translateZ(2rem); }
+        @keyframes expandHeight {
+            0% { height: auto; } /* Start from default height */
+            100% { height: 100vh; } /* Expand to full viewport height */
         }
         .feature-card::before {
             content: '';
@@ -207,27 +205,25 @@
             z-index: -1;
         }
         .feature-card:hover::before {
-            transform: rotate(0deg) scale(1.2) translateZ(-0.5rem);
+            transform: rotate(0deg) scale(1.2);
         }
         .feature-card i {
             font-size: 2rem;
             color: var(--accent);
             margin-bottom: 0.75rem;
             transition: transform 0.4s ease;
-            transform-style: preserve-3d;
         }
         .feature-card:hover i {
-            transform: scale(1.2) translateZ(0.5rem);
+            transform: scale(1.2);
         }
         .feature-card p {
             font-size: 1rem;
             font-weight: 500;
             color: var(--text);
             transition: transform 0.4s ease;
-            transform-style: preserve-3d;
         }
         .feature-card:hover p {
-            transform: translateZ(0.3rem);
+            transform: translateY(0.3rem);
         }
         .form-container {
             background: var(--glass);
@@ -737,7 +733,7 @@
     <script>
         let isMapInitialized = false;
         let locationInterval = null;
-        const LOCATION_UPDATE_INTERVAL = 30000; // 30 seconds for faster updates
+        const LOCATION_UPDATE_INTERVAL = 30000;
 
         function showPopup(message) {
             const popupOverlay = document.getElementById('popup-overlay');
@@ -956,7 +952,7 @@
                 card.classList.remove('enlarging');
                 body.classList.remove('active', 'fade-out-except-enlarging');
                 showPage('map-page');
-            }, 500);
+            }, 3000); // Slowed to 3000ms (3s)
         }
 
         function triggerFakeCall() {
@@ -1004,16 +1000,13 @@
                     userId: user.uid
                 };
 
-                // Update location share
                 db.collection('locationShares').doc(user.uid).set(sosData)
                     .then(() => {
-                        // Store SOS event with emergencyContactIds
                         db.collection('users').doc(user.uid).get().then((doc) => {
                             if (doc.exists) {
                                 const userData = doc.data();
                                 const emergencyContactIds = userData.emergencyContactIds || [];
 
-                                // Log SOS event with emergency contacts
                                 db.collection('sosEvents').add({
                                     userId: user.uid,
                                     senderName: userData.name,
@@ -1034,8 +1027,8 @@
         document.querySelector('.sos-btn').addEventListener('click', () => {
             showPopup('SOS Alert Sent to linked emergency contacts!');
             if (!locationInterval) {
-                shareLocation(); // Share immediately
-                locationInterval = setInterval(shareLocation, LOCATION_UPDATE_INTERVAL); // Share every 30 seconds
+                shareLocation();
+                locationInterval = setInterval(shareLocation, LOCATION_UPDATE_INTERVAL);
                 document.getElementById('stop-sharing-btn').style.display = 'block';
             }
         });
@@ -1276,10 +1269,9 @@
                 .catch((error) => showPopup('Error signing out: ' + error.message));
         }
 
-        // Listen for SOS events where the current user is an emergency contact
         let unsubscribeSosListener = null;
         function listenForSosEvents(userId) {
-            if (unsubscribeSosListener) unsubscribeSosListener(); // Clean up previous listener
+            if (unsubscribeSosListener) unsubscribeSosListener();
 
             unsubscribeSosListener = db.collection('sosEvents')
                 .where('emergencyContactIds', 'array-contains', userId)
@@ -1302,16 +1294,15 @@
                 document.getElementById('navbar').style.display = 'flex';
                 showPage('home');
                 loadUserProfile(user.uid);
-                listenForSosEvents(user.uid); // Start listening for SOS events
+                listenForSosEvents(user.uid);
 
-                // Ensure location sharing is off by default unless explicitly started
                 db.collection('locationShares').doc(user.uid).get().then((doc) => {
                     if (doc.exists && doc.data().active) {
-                        stopSharing(); // Reset any leftover sharing state
+                        stopSharing();
                     }
                 });
             } else {
-                if (unsubscribeSosListener) unsubscribeSosListener(); // Stop listening on sign out
+                if (unsubscribeSosListener) unsubscribeSosListener();
                 document.getElementById('navbar').style.display = 'none';
                 showPage('signin');
                 if (locationInterval) {
