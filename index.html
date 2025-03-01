@@ -17,7 +17,6 @@
             box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-
         :root {
             --background: #FFFFFF;
             --text: #000000;
@@ -25,7 +24,6 @@
             --shadow: 0 0.5rem 1rem -0.1875rem rgba(0, 0, 0, 0.1);
             --glass: rgba(255, 255, 255, 0.3);
         }
-
         body {
             background: var(--background);
             color: var(--text);
@@ -33,20 +31,16 @@
             overflow-x: hidden;
             font-size: 1rem;
         }
-
         .fade-out-except-enlarging * {
             transition: opacity 0.5s ease;
             opacity: 1;
         }
-
         .fade-out-except-enlarging.active * {
             opacity: 0;
         }
-
         .fade-out-except-enlarging.active .feature-card.enlarging {
             opacity: 1;
         }
-
         #loading-screen {
             position: fixed;
             inset: 0;
@@ -57,18 +51,15 @@
             opacity: 1;
             transition: opacity 0.8s ease-out;
         }
-
         #loading-screen.hide {
             opacity: 0;
             pointer-events: none;
         }
-
         #loading-icon {
             font-size: 2.5rem;
             color: var(--accent);
             animation: pulseGlow 1.5s infinite ease-in-out;
         }
-
         #loading-text {
             font-size: 1rem;
             font-weight: 500;
@@ -76,12 +67,10 @@
             margin-top: 1rem;
             color: var(--text);
         }
-
         @keyframes pulseGlow {
             0%, 100% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.1); opacity: 1; }
         }
-
         header {
             background: var(--background);
             padding: 1rem 5%;
@@ -93,25 +82,21 @@
             justify-content: center;
             box-shadow: var(--shadow);
         }
-
         header i {
             font-size: 1.5rem;
             color: var(--accent);
             margin-right: 0.75rem;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         header h1 {
             font-size: 1.25rem;
             font-weight: 800;
             letter-spacing: 0.125rem;
             color: var(--text);
         }
-
         header:hover i {
             transform: rotate(360deg);
         }
-
         .page {
             display: none;
             padding: 4rem 5% 6rem;
@@ -119,12 +104,10 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
-
         .page.active {
             display: block;
             opacity: 1;
         }
-
         .sos-btn {
             background: red;
             border: none;
@@ -142,7 +125,6 @@
             overflow: hidden;
             box-shadow: var(--shadow);
         }
-
         .sos-btn::before {
             content: '';
             position: absolute;
@@ -154,18 +136,15 @@
             animation: ripple 4s infinite;
             opacity: 0.6;
         }
-
         .sos-btn:hover {
             transform: scale(1.05) rotate(2deg);
             box-shadow: 0 0.9375rem 1.5625rem rgba(0, 0, 0, 0.2);
         }
-
         @keyframes ripple {
             0% { transform: scale(0.8); opacity: 0; }
             50% { opacity: 0.3; }
             100% { transform: scale(1.2); opacity: 0; }
         }
-
         #stop-sharing-btn {
             background: #ff4444;
             color: var(--background);
@@ -179,12 +158,10 @@
             display: none;
             transition: all 0.3s ease;
         }
-
         #stop-sharing-btn:hover {
             transform: translateY(-0.125rem);
             box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.2);
         }
-
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
@@ -194,7 +171,6 @@
             padding: 1rem 0;
             perspective: 1000px;
         }
-
         .feature-card {
             background: var(--glass);
             backdrop-filter: blur(0.5rem);
@@ -207,21 +183,17 @@
             transform-style: preserve-3d;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
-
         .feature-card:hover {
             transform: translateZ(1rem) rotateX(10deg) rotateY(10deg);
             box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
         }
-
         .feature-card.enlarging {
             animation: enlarge 0.5s ease forwards;
         }
-
         @keyframes enlarge {
             0% { transform: scale(1); }
             100% { transform: scale(1.5) translateZ(2rem); }
         }
-
         .feature-card::before {
             content: '';
             position: absolute;
@@ -234,11 +206,9 @@
             transition: all 0.6s ease;
             z-index: -1;
         }
-
         .feature-card:hover::before {
             transform: rotate(0deg) scale(1.2) translateZ(-0.5rem);
         }
-
         .feature-card i {
             font-size: 2rem;
             color: var(--accent);
@@ -246,11 +216,9 @@
             transition: transform 0.4s ease;
             transform-style: preserve-3d;
         }
-
         .feature-card:hover i {
             transform: scale(1.2) translateZ(0.5rem);
         }
-
         .feature-card p {
             font-size: 1rem;
             font-weight: 500;
@@ -258,11 +226,9 @@
             transition: transform 0.4s ease;
             transform-style: preserve-3d;
         }
-
         .feature-card:hover p {
             transform: translateZ(0.3rem);
         }
-
         .form-container {
             background: var(--glass);
             backdrop-filter: blur(0.75rem);
@@ -275,14 +241,12 @@
             box-shadow: var(--shadow);
             position: relative;
         }
-
         .form-container h2 {
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
             color: var(--text);
         }
-
         .form-container input {
             width: 100%;
             padding: 0.75rem;
@@ -294,19 +258,16 @@
             font-size: 0.9375rem;
             transition: all 0.3s ease;
         }
-
         .form-container input:focus {
             background: rgba(255, 255, 255, 0.7);
             box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.2);
             outline: none;
             transform: scale(1.02);
         }
-
         .form-container input::placeholder {
             color: var(--text);
             opacity: 0.6;
         }
-
         .form-container button {
             background: var(--accent);
             color: var(--background);
@@ -322,7 +283,6 @@
             overflow: hidden;
             transition: all 0.4s ease;
         }
-
         .form-container button::after {
             content: '';
             position: absolute;
@@ -334,35 +294,29 @@
             opacity: 0;
             transition: all 0.6s ease;
         }
-
         .form-container button:hover::after {
             opacity: 1;
             transform: scale(1.5);
         }
-
         .form-container button:hover {
             transform: translateY(-0.1875rem);
             box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.2);
         }
-
         .switch-link {
             margin-top: 1rem;
             text-align: center;
             font-size: 0.875rem;
             color: var(--text);
         }
-
         .switch-link a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
         }
-
         .switch-link a:hover {
             text-decoration: underline;
         }
-
         #map {
             height: 60vh;
             width: 90%;
@@ -371,7 +325,6 @@
             box-shadow: var(--shadow);
             border: 0.0625rem solid var(--accent);
         }
-
         .profile-container {
             background: var(--glass);
             backdrop-filter: blur(0.75rem);
@@ -383,14 +336,12 @@
             max-width: 25rem;
             box-shadow: var(--shadow);
         }
-
         .profile-container h2 {
             font-size: 1.375rem;
             font-weight: 700;
             margin-bottom: 1rem;
             color: var(--text);
         }
-
         .profile-container p {
             font-size: 0.875rem;
             color: var(--text);
@@ -399,7 +350,9 @@
             background: rgba(255, 255, 255, 0.5);
             border-radius: 0.5rem;
         }
-
+        .profile-field {
+            margin-bottom: 0.5rem;
+        }
         .profile-field input {
             width: 100%;
             padding: 0.75rem;
@@ -410,13 +363,27 @@
             color: var(--text);
             transition: all 0.3s ease;
         }
-
         .profile-field input:focus {
             background: rgba(255, 255, 255, 0.7);
             box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.2);
             outline: none;
         }
-
+        .profile-field button {
+            background: var(--accent);
+            color: var(--background);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.625rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .profile-field button:hover {
+            transform: translateY(-0.125rem);
+            box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.2);
+        }
         .profile-action button {
             background: var(--accent);
             color: var(--background);
@@ -430,12 +397,10 @@
             margin: 0.5rem 0;
             width: 100%;
         }
-
         .profile-action button:hover {
             transform: translateY(-0.125rem);
             box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.2);
         }
-
         #signout-btn {
             background: transparent;
             color: var(--accent);
@@ -449,14 +414,12 @@
             margin: 0.5rem 0;
             width: 100%;
         }
-
         #signout-btn:hover {
             background: var(--accent);
             color: var(--background);
             transform: translateY(-0.125rem);
             box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.2);
         }
-
         nav {
             position: fixed;
             bottom: 1rem;
@@ -475,7 +438,6 @@
             max-width: 20rem;
             justify-content: space-around;
         }
-
         nav button {
             background: none;
             border: none;
@@ -490,24 +452,19 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
         }
-
         nav button i {
             font-size: 1.25rem;
         }
-
         nav button:hover {
             color: var(--accent);
             transform: translateY(-0.1875rem);
         }
-
         nav button.active {
             color: var(--accent);
         }
-
         nav button.active i {
             animation: glowPulse 1.5s infinite;
         }
-
         nav button::before {
             content: '';
             position: absolute;
@@ -520,11 +477,9 @@
             transform: translateX(-50%);
             border-radius: 0.125rem;
         }
-
         nav button.active::before {
             width: 70%;
         }
-
         #route-instructions {
             background: var(--glass);
             backdrop-filter: blur(0.75rem);
@@ -537,7 +492,6 @@
             overflow-y: auto;
             box-shadow: var(--shadow);
         }
-
         .location-inputs {
             display: flex;
             flex-direction: column;
@@ -546,7 +500,6 @@
             width: 90%;
             max-width: 25rem;
         }
-
         .location-input {
             display: flex;
             align-items: center;
@@ -555,16 +508,13 @@
             border-radius: 0.75rem;
             transition: all 0.3s ease;
         }
-
         .location-input:hover {
             background: rgba(255, 255, 255, 0.7);
         }
-
         .location-input i {
             padding: 0.75rem;
             color: var(--accent);
         }
-
         .location-input input {
             flex: 1;
             border: none;
@@ -573,11 +523,9 @@
             color: var(--text);
             font-size: 0.9375rem;
         }
-
         .location-input input:focus {
             outline: none;
         }
-
         .route-btn, #current-location-btn {
             background: var(--accent);
             color: var(--background);
@@ -594,13 +542,11 @@
             position: relative;
             overflow: hidden;
         }
-
         .route-btn:disabled, #current-location-btn:disabled {
             background: var(--text);
             cursor: not-allowed;
             opacity: 0.6;
         }
-
         .route-btn::after, #current-location-btn::after {
             content: '';
             position: absolute;
@@ -612,17 +558,14 @@
             opacity: 0;
             transition: all 0.6s ease;
         }
-
         .route-btn:hover:not(:disabled)::after, #current-location-btn:hover:not(:disabled)::after {
             opacity: 1;
             transform: scale(1.5);
         }
-
         .route-btn:hover:not(:disabled), #current-location-btn:hover:not(:disabled) {
             transform: translateY(-0.1875rem);
             box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.2);
         }
-
         #popup-overlay {
             position: fixed;
             inset: 0;
@@ -635,12 +578,10 @@
             transition: all 0.4s ease;
             backdrop-filter: blur(0.25rem);
         }
-
         #popup-overlay.active {
             opacity: 1;
             visibility: visible;
         }
-
         #popup-box {
             background: var(--background);
             border-radius: 1.25rem;
@@ -652,18 +593,15 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 0.0625rem solid var(--accent);
         }
-
         #popup-overlay.active #popup-box {
             transform: scale(1);
         }
-
         #popup-message {
             font-size: 0.9375rem;
             margin-bottom: 1.5rem;
             color: var(--text);
             line-height: 1.5;
         }
-
         #popup-close-btn {
             background: var(--accent);
             color: var(--background);
@@ -676,7 +614,6 @@
             transition: all 0.3s ease;
             width: 100%;
         }
-
         #popup-close-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.2);
@@ -769,6 +706,8 @@
             <h2 id="profile-name">Loading...</h2>
             <p id="profile-email">Email: Loading...</p>
             <p id="profile-emergency">Emergency Contacts: Loading...</p>
+            <p id="profile-unique-id">Your Unique ID: Loading...</p>
+            <p id="profile-emergency-ids">Linked Emergency Contacts: Loading...</p>
             <div class="profile-action">
                 <button id="edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
             </div>
@@ -778,6 +717,10 @@
                 </div>
                 <div class="profile-field">
                     <input id="edit-emergency" type="text" placeholder="Emergency Contacts (e.g., +1234567890,+0987654321)">
+                </div>
+                <div class="profile-field">
+                    <input id="add-emergency-id" type="text" placeholder="Add Emergency Contact by Unique ID">
+                    <button onclick="addEmergencyContactById()">Add</button>
                 </div>
                 <div class="profile-action">
                     <button onclick="updateProfile()">Save Changes</button>
@@ -1038,6 +981,13 @@
             }
         }
 
+        function generateUniqueId() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
         function shareLocation() {
             const user = auth.currentUser;
             if (!user) {
@@ -1054,12 +1004,28 @@
                 }).then(() => {
                     db.collection('users').doc(user.uid).get().then((doc) => {
                         if (doc.exists) {
-                            const emergencyContacts = doc.data().emergencyContacts || [];
-                            const message = encodeURIComponent(`Emergency: My location at ${new Date().toLocaleString()}: ${locationUrl}`);
-                            emergencyContacts.forEach(phone => {
+                            const userData = doc.data();
+                            const phoneContacts = userData.emergencyContacts || [];
+                            const emergencyContactIds = userData.emergencyContactIds || [];
+                            const message = encodeURIComponent(`Emergency: ${userData.name}'s location at ${new Date().toLocaleString()}: ${locationUrl}`);
+
+                            // Notify phone contacts via WhatsApp
+                            phoneContacts.forEach(phone => {
                                 const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-                                window.open(whatsappUrl, '_blank'); // Opens WhatsApp chat for each contact
+                                window.open(whatsappUrl, '_blank');
                             });
+
+                            // Notify linked users via in-app simulation (console log)
+                            emergencyContactIds.forEach(contactId => {
+                                db.collection('users').doc(contactId).get().then(contactDoc => {
+                                    if (contactDoc.exists) {
+                                        const contactData = contactDoc.data();
+                                        console.log(`In-app notification to ${contactData.name} (${contactData.email}): ${message}`);
+                                    }
+                                });
+                            });
+
+                            showPopup('SOS sent to all emergency contacts!');
                         } else {
                             showPopup('No emergency contacts found.');
                         }
@@ -1069,7 +1035,7 @@
         }
 
         document.querySelector('.sos-btn').addEventListener('click', () => {
-            showPopup('SOS Alert Sent! Opening WhatsApp for all emergency contacts... (Please press "Send" in WhatsApp)');
+            showPopup('SOS Alert Sent! Opening WhatsApp for phone contacts... (Please press "Send" in WhatsApp)');
             if (!locationInterval) {
                 shareLocation(); // Share immediately
                 locationInterval = setInterval(shareLocation, LOCATION_UPDATE_INTERVAL); // Share every 30 seconds
@@ -1116,6 +1082,8 @@
                 return;
             }
 
+            const uniqueId = generateUniqueId();
+
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
@@ -1123,6 +1091,8 @@
                         name: name,
                         email: email,
                         emergencyContacts: emergencyContacts,
+                        uniqueId: uniqueId,
+                        emergencyContactIds: [],
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 })
@@ -1165,7 +1135,23 @@
                         const userData = doc.data();
                         document.getElementById('profile-name').textContent = userData.name;
                         document.getElementById('profile-email').textContent = 'Email: ' + userData.email;
-                        document.getElementById('profile-emergency').textContent = 'Emergency Contacts: ' + (userData.emergencyContacts || []).join(', ');
+                        document.getElementById('profile-emergency').textContent = 'Emergency Phone Contacts: ' + (userData.emergencyContacts || []).join(', ');
+                        document.getElementById('profile-unique-id').textContent = 'Your Unique ID: ' + userData.uniqueId;
+
+                        const emergencyContactIds = userData.emergencyContactIds || [];
+                        if (emergencyContactIds.length > 0) {
+                            Promise.all(emergencyContactIds.map(id =>
+                                db.collection('users').doc(id).get().then(doc => doc.exists ? doc.data().name : 'Unknown')
+                            )).then(names => {
+                                document.getElementById('profile-emergency-ids').textContent = 'Linked Emergency Contacts: ' + names.join(', ');
+                            }).catch(error => {
+                                console.error('Error loading linked contacts:', error);
+                                document.getElementById('profile-emergency-ids').textContent = 'Linked Emergency Contacts: Error loading';
+                            });
+                        } else {
+                            document.getElementById('profile-emergency-ids').textContent = 'Linked Emergency Contacts: None';
+                        }
+
                         document.getElementById('edit-name').value = userData.name;
                         document.getElementById('edit-emergency').value = (userData.emergencyContacts || []).join(', ');
                     } else {
@@ -1183,6 +1169,57 @@
                 editForm.style.display = 'none';
                 document.getElementById('edit-profile-btn').textContent = 'Edit Profile';
             }
+        }
+
+        function addEmergencyContactById() {
+            const uniqueIdToAdd = document.getElementById('add-emergency-id').value.trim();
+            const user = auth.currentUser;
+
+            if (!uniqueIdToAdd) {
+                showPopup('Please enter a unique ID.');
+                return;
+            }
+
+            if (!user) {
+                showPopup('Please sign in to add an emergency contact.');
+                return;
+            }
+
+            db.collection('users').where('uniqueId', '==', uniqueIdToAdd).get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        showPopup('No user found with this Unique ID.');
+                        return;
+                    }
+
+                    const targetUserDoc = querySnapshot.docs[0];
+                    const targetUserId = targetUserDoc.id;
+
+                    if (targetUserId === user.uid) {
+                        showPopup('You cannot add yourself as an emergency contact.');
+                        return;
+                    }
+
+                    db.collection('users').doc(user.uid).get().then((doc) => {
+                        if (doc.exists) {
+                            const currentEmergencyIds = doc.data().emergencyContactIds || [];
+                            if (currentEmergencyIds.includes(targetUserId)) {
+                                showPopup('This user is already an emergency contact.');
+                                return;
+                            }
+
+                            currentEmergencyIds.push(targetUserId);
+                            db.collection('users').doc(user.uid).update({
+                                emergencyContactIds: currentEmergencyIds
+                            }).then(() => {
+                                showPopup(`Added ${targetUserDoc.data().name} as an emergency contact!`);
+                                document.getElementById('add-emergency-id').value = '';
+                                loadUserProfile(user.uid);
+                            }).catch((error) => showPopup('Error adding contact: ' + error.message));
+                        }
+                    });
+                })
+                .catch((error) => showPopup('Error searching for user: ' + error.message));
         }
 
         function updateProfile() {
