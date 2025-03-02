@@ -1,134 +1,133 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SOSecureApp</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMRIMm__FjOZQOZ9QwfCFagheluY0rjbg&callback=initMap" async defer></script>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <div id="popup-overlay">
-            <div id="popup-box">
-                <div id="popup-message"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOSecureApp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMRIMm__FjOZQOZ9QwfCFagheluY0rjbg&callback=initMap" async defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="popup-overlay">
+        <div id="popup-box">
+            <div id="popup-message"></div>
+        </div>
+    </div>
+    <header>
+        <i class="fas fa-shield-alt"></i>
+        <h1>SOSecure</h1>
+    </header>
+    <div id="home" class="page">
+        <button class="sos-btn">SOS</button>
+        <button id="stop-sharing-btn" onclick="stopSharing()">Stop Sharing</button>
+        <div class="features">
+            <div class="feature-card" onclick="transitionToMapPage(this)">
+                <i class="fas fa-map"></i>
+                <p>Safe Map</p>
+            </div>
+            <div class="feature-card" onclick="transitionToCommunityPage(this)">
+                <i class="fas fa-users"></i>
+                <p>Community</p>
+            </div>
+            <div class="feature-card" onclick="showPopup('Call 911')">
+                <i class="fas fa-info-circle"></i>
+                <p>Resources</p>
             </div>
         </div>
-        <header>
-            <i class="fas fa-shield-alt"></i>
-            <h1>SOSecure</h1>
-        </header>
-        <div id="home" class="page">
-            <button class="sos-btn">SOS</button>
-            <button id="stop-sharing-btn" onclick="stopSharing()">Stop Sharing</button>
-            <div class="features">
-                <div class="feature-card" onclick="transitionToMapPage(this)">
-                    <i class="fas fa-map"></i>
-                    <p>Safe Map</p>
-                </div>
-                <div class="feature-card" onclick="transitionToCommunityPage(this)">
-                    <i class="fas fa-users"></i>
-                    <p>Community</p>
-                </div>
-                <div class="feature-card" onclick="showPopup('Call 911')">
-                    <i class="fas fa-info-circle"></i>
-                    <p>Resources</p>
-                </div>
+    </div>
+    <div id="signup" class="page">
+        <div class="form-container">
+            <h2>Sign Up</h2>
+            <input id="signup-name" type="text" placeholder="Full Name" required>
+            <input id="signup-email" type="email" placeholder="Email" required>
+            <input id="signup-password" type="password" placeholder="Password" required>
+            <input id="signup-emergency-contacts" type="text" placeholder="Emergency Contacts (e.g., +1234567890,+0987654321)" required>
+            <button onclick="signUp()">Sign Up</button>
+            <div class="switch-link">
+                <p>Already have an account? <a href="#" onclick="showPage('signin')">Sign In</a></p>
             </div>
         </div>
-        <div id="signup" class="page">
-            <div class="form-container">
-                <h2>Sign Up</h2>
-                <input id="signup-name" type="text" placeholder="Full Name" required>
-                <input id="signup-email" type="email" placeholder="Email" required>
-                <input id="signup-password" type="password" placeholder="Password" required>
-                <input id="signup-emergency-contacts" type="text" placeholder="Emergency Contacts (e.g., +1234567890,+0987654321)" required>
-                <button onclick="signUp()">Sign Up</button>
-                <div class="switch-link">
-                    <p>Already have an account? <a href="#" onclick="showPage('signin')">Sign In</a></p>
-                </div>
+    </div>
+    <div id="signin" class="page active">
+        <div class="form-container">
+            <h2>Sign In</h2>
+            <input id="signin-email" type="email" placeholder="Email" required>
+            <input id="signin-password" type="password" placeholder="Password" required>
+            <button onclick="signIn()">Sign In</button>
+            <div class="switch-link">
+                <p>Need an account? <a href="#" onclick="showPage('signup')">Sign Up</a></p>
             </div>
         </div>
-        <div id="signin" class="page active">
-            <div class="form-container">
-                <h2>Sign In</h2>
-                <input id="signin-email" type="email" placeholder="Email" required>
-                <input id="signin-password" type="password" placeholder="Password" required>
-                <button onclick="signIn()">Sign In</button>
-                <div class="switch-link">
-                    <p>Need an account? <a href="#" onclick="showPage('signup')">Sign Up</a></p>
-                </div>
+    </div>
+    <div id="map-page" class="page">
+        <h2 style="margin: 1.5rem 0; font-size: 1.5rem; font-weight: 700; color: var(--text);">Navigation</h2>
+        <div class="location-inputs">
+            <div class="location-input">
+                <i class="fas fa-map-marker-alt"></i>
+                <input id="start-location" type="text" placeholder="Starting Location">
+            </div>
+            <div class="location-input">
+                <i class="fas fa-flag-checkered"></i>
+                <input id="end-location" autocomplete="off" type="text" placeholder="Destination">
             </div>
         </div>
-        <div id="map-page" class="page">
-            <h2 style="margin: 1.5rem 0; font-size: 1.5rem; font-weight: 700; color: var(--text);">Navigation</h2>
-            <div class="location-inputs">
-                <div class="location-input">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <input id="start-location" type="text" placeholder="Starting Location">
-                </div>
-                <div class="location-input">
-                    <i class="fas fa-flag-checkered"></i>
-                    <input id="end-location" autocomplete="off" type="text" placeholder="Destination">
-                </div>
-            </div>
-            <button class="route-btn" onclick="calculateSafeRoute()" disabled>Find Route</button>
-            <button id="current-location-btn" onclick="setCurrentLocation()" disabled>Use Current Location</button>
-            <div id="map"></div>
-            <div id="route-instructions" style="display: none;">
-                <h3>Route Instructions</h3>
-                <div id="route-steps"></div>
-            </div>
+        <button class="route-btn" onclick="calculateSafeRoute()" disabled>Find Route</button>
+        <button id="current-location-btn" onclick="setCurrentLocation()" disabled>Use Current Location</button>
+        <div id="map"></div>
+        <div id="route-instructions" style="display: none;">
+            <h3>Route Instructions</h3>
+            <div id="route-steps"></div>
         </div>
-        <div id="profile" class="page">
-            <div class="profile-container">
-                <h2 id="profile-name">Loading...</h2>
-                <p id="profile-email">Email: Loading...</p>
-                <p id="profile-emergency">Emergency Contacts: Loading...</p>
-                <p id="profile-unique-id">Your Unique ID: Loading...</p>
-                <p id="profile-emergency-ids">Linked Emergency Contacts: Loading...</p>
+    </div>
+    <div id="profile" class="page">
+        <div class="profile-container">
+            <h2 id="profile-name">Loading...</h2>
+            <p id="profile-email">Email: Loading...</p>
+            <p id="profile-emergency">Emergency Contacts: Loading...</p>
+            <p id="profile-unique-id">Your Unique ID: Loading...</p>
+            <p id="profile-emergency-ids">Linked Emergency Contacts: Loading...</p>
+            <div class="profile-action">
+                <button id="edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
+            </div>
+            <div id="edit-profile-form" style="display: none;">
+                <div class="profile-field">
+                    <input id="edit-name" type="text" placeholder="Full Name">
+                </div>
+                <div class="profile-field">
+                    <input id="edit-emergency" type="text" placeholder="Emergency Contacts (e.g., +1234567890,+0987654321)">
+                </div>
+                <div class="profile-field">
+                    <input id="add-emergency-id" type="text" placeholder="Add Emergency Contact by Unique ID">
+                    <button onclick="addEmergencyContactById()">Add</button>
+                </div>
                 <div class="profile-action">
-                    <button id="edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
-                </div>
-                <div id="edit-profile-form" style="display: none;">
-                    <div class="profile-field">
-                        <input id="edit-name" type="text" placeholder="Full Name">
-                    </div>
-                    <div class="profile-field">
-                        <input id="edit-emergency" type="text" placeholder="Emergency Contacts (e.g., +1234567890,+0987654321)">
-                    </div>
-                    <div class="profile-field">
-                        <input id="add-emergency-id" type="text" placeholder="Add Emergency Contact by Unique ID">
-                        <button onclick="addEmergencyContactById()">Add</button>
-                    </div>
-                    <div class="profile-action">
-                        <button onclick="updateProfile()">Save Changes</button>
-                    </div>
-                </div>
-                <button id="signout-btn" onclick="signOut()">Sign Out</button>
-            </div>
-        </div>
-        <div id="community-page" class="page">
-            <div class="community-content">
-                <div class="post-form">
-                    <textarea id="community-post" placeholder="Share your thoughts..."></textarea>
-                    <button onclick="submitCommunityPost()">Post</button>
-                </div>
-                <div class="posts-list" id="community-posts">
-                
+                    <button onclick="updateProfile()">Save Changes</button>
                 </div>
             </div>
+            <button id="signout-btn" onclick="signOut()">Sign Out</button>
         </div>
-        <nav id="navbar" style="display: none;">
-            <button onclick="showPage('home')"><i class="fas fa-home"></i>Home</button>
-            <button onclick="showPage('map-page')"><i class="fas fa-map"></i>Maps</button>
-            <button onclick="showPage('community-page')"><i class="fas fa-users"></i>Community</button>
-            <button onclick="showPage('profile')"><i class="fas fa-user"></i>Profile</button>
-        </nav>
-        <script src="script.js"></script>
-    </body>
-    </html>
+    </div>
+    <div id="community-page" class="page">
+        <div class="community-content">
+            <div class="post-form">
+                <textarea id="community-post" placeholder="Share your thoughts..."></textarea>
+                <button onclick="submitCommunityPost()">Post</button>
+            </div>
+            <div class="posts-list" id="community-posts">
+            </div>
+        </div>
+    </div>
+    <nav id="navbar" style="display: none;">
+        <button onclick="showPage('home')"><i class="fas fa-home"></i>Home</button>
+        <button onclick="showPage('map-page')"><i class="fas fa-map"></i>Maps</button>
+        <button onclick="showPage('community-page')"><i class="fas fa-users"></i>Community</button>
+        <button onclick="showPage('profile')"><i class="fas fa-user"></i>Profile</button>
+    </nav>
+    <script src="script.js"></script>
+</body>
+</html>
