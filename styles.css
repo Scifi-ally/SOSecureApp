@@ -391,7 +391,6 @@ header h1 {
     opacity: 0.6;
 }
 
-/* 3D Buttons for Signup, Signin, Profile */
 #signup .form-container button,
 #signin .form-container button,
 #profile .profile-field button,
@@ -454,7 +453,6 @@ header h1 {
     margin-bottom: 0.75rem;
 }
 
-/* 3D Signout Button */
 #profile #signout-btn {
     background: var(--button-base);
     color: var(--background);
@@ -489,7 +487,6 @@ header h1 {
     transform: scale(1.01);
 }
 
-/* Centered Flat Navbar */
 nav {
     position: fixed;
 bottom: 0.6rem;
@@ -502,8 +499,8 @@ padding: 0.3rem 0.6rem;
 display: flex;
 gap: 0.6rem;
 z-index: 100;
-width: 90%; /* Let content determine width */
-max-width: 90%; /* Prevent overflow on small screens */
+width: 90%;
+max-width: 90%;
 justify-content: space-around;
 background: rgba(255, 255, 255, 0.55);
 box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -628,7 +625,6 @@ nav button.active::before {
     background: rgba(255, 255, 255, 0.7);
 }
 
-/* 3D Route and Current Location Buttons */
 .route-btn, #current-location-btn {
     background: var(--button-base);
     color: var(--background);
@@ -724,7 +720,6 @@ nav button.active::before {
     justify-content: center;
 }
 
-/* 3D Popup Buttons */
 #popup-close-btn {
     background: var(--button-base);
     color: var(--background);
@@ -805,7 +800,6 @@ nav button.active::before {
     border-color: var(--button-hover);
 }
 
-/* 3D Post Button */
 .post-form button {
     background: var(--button-base);
     color: var(--background);
@@ -857,7 +851,6 @@ nav button.active::before {
     margin-top: 0.5rem;
 }
 
-/* 3D Remove Button */
 .post-item .remove-btn {
     background: var(--button-base);
     color: var(--background);

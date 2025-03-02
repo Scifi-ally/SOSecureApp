@@ -7,9 +7,9 @@ function showPopup(message, isSosAlert = false, sosData = null) {
     const popupBox = document.getElementById('popup-box');
     const popupMessage = document.getElementById('popup-message');
 
-    // Clear existing content and ensure the message div is present
+
     popupBox.innerHTML = '<div id="popup-message"></div>';
-    const newPopupMessage = document.getElementById('popup-message'); // Re-query after reset
+    const newPopupMessage = document.getElementById('popup-message');
 
     if (isSosAlert && sosData) {
         popupBox.classList.add('sos-alert');
@@ -75,7 +75,6 @@ let directionsService;
 let directionsRenderer;
 let currentLocationMarker;
 
-// Define initMap globally
 window.initMap = function() {
     console.log("Google Maps API loaded");
 };
@@ -608,12 +607,12 @@ function signOut() {
     }
     auth.signOut()
         .then(() => {
-            hidePopup(); // Hide any existing popup
-            setTimeout(() => { // Delay the page transition to allow popup to display
+            hidePopup();
+            setTimeout(() => {
                 document.getElementById('navbar').style.display = 'none';
                 showPage('signin');
-                hidePopup(); // Hide popup after transition
-            }, 1500); // 1.5 seconds delay
+                hidePopup();
+            }, 1500);
         })
         .catch((error) => showPopup('Error signing out: ' + error.message));
 }
