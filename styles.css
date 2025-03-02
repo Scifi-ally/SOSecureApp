@@ -4,20 +4,20 @@
     box-sizing: border-box;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+
 :root {
-    --background: #FFFFFF;
-    --text: #000000;
-    --accent: #000000;
+    --background: #FFFFFF; /* White background */
+    --text: #000000; /* Black text */
+    --accent: #000000; /* Black for borders and accents */
     --glass: rgba(255, 255, 255, 0.3);
-    --boxy-background: #1A1A1A;
-    --boxy-text: #FFFFFF;
-    --boxy-accent: #808080;
-    --boxy-highlight: #D3D3D3;
-    --boxy-shadow-dark: #0F0F0F;
-    --boxy-shadow-light: #2A2A2A;
-    --retro-red: #FF0000;
-    --retro-dark-red: #CC0000;
+    --button-base: #000000; /* Black for 3D buttons */
+    --button-hover: #333333; /* Darker shade for hover */
+    --button-shadow-dark: #666666; /* Dark shadow for 3D */
+    --button-shadow-light: #CCCCCC; /* Light shadow for 3D */
+    --retro-red: #881D1D; /* Retro red for SOS button */
+    --retro-dark-red: #CC0000; /* Darker red for SOS hover */
 }
+
 body {
     background: var(--background);
     color: var(--text);
@@ -25,16 +25,20 @@ body {
     overflow-x: hidden;
     font-size: 1rem;
 }
+
 .fade-out-except-enlarging * {
     transition: opacity 1s ease;
     opacity: 1;
 }
+
 .fade-out-except-enlarging.active * {
     opacity: 0;
 }
+
 .fade-out-except-enlarging.active .feature-card.enlarging {
     opacity: 1;
 }
+
 header {
     background: var(--background);
     padding: 1rem 5%;
@@ -47,9 +51,10 @@ header {
     border-bottom: 1px solid var(--accent);
     transition: background 0.3s ease;
 }
+
 header i {
     font-size: 2.5rem;
-    background: linear-gradient(45deg, #808080, #000000);
+    background: linear-gradient(45deg, #666666, #000000);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -57,6 +62,7 @@ header i {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     animation: shieldPulse 2s infinite ease-in-out;
 }
+
 header h1 {
     font-size: 1.5rem;
     font-weight: 800;
@@ -65,15 +71,18 @@ header h1 {
     text-transform: uppercase;
     animation: textGlow 3s infinite alternate;
 }
+
 @keyframes shieldPulse {
     0% { transform: scale(1); filter: brightness(1); }
     50% { transform: scale(1.05); filter: brightness(1.2); }
     100% { transform: scale(1); filter: brightness(1); }
 }
+
 @keyframes textGlow {
     0% { text-shadow: 0 0 2px rgba(0, 0, 0, 0.2); }
     100% { text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); }
 }
+
 .page {
     display: none;
     padding: 4rem 5% 6rem;
@@ -81,10 +90,13 @@ header h1 {
     opacity: 0;
     transition: opacity 0.5s ease;
 }
+
 .page.active {
     display: block;
     opacity: 1;
 }
+
+/* Retro SOS Button with Retro Red */
 .sos-btn {
     background: var(--retro-red);
     border: 4px solid var(--text);
@@ -101,18 +113,21 @@ header h1 {
     display: grid;
     place-items: center;
     position: relative;
-    box-shadow: 6px 6px 0 var(--boxy-shadow-dark);
+    box-shadow: 6px 6px 0 var(--button-shadow-dark);
     transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
+
 .sos-btn:hover {
     transform: translate(2px, 2px);
     background: var(--retro-dark-red);
-    box-shadow: 3px 3px 0 var(--boxy-shadow-dark);
+    box-shadow: 3px 3px 0 var(--button-shadow-dark);
 }
+
 .sos-btn:active {
     transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0 var(--boxy-shadow-dark);
+    box-shadow: 0px 0px 0 var(--button-shadow-dark);
 }
+
 .sos-btn::before {
     content: '';
     position: absolute;
@@ -124,15 +139,18 @@ header h1 {
     animation: retroGlow 2s infinite ease-in-out;
     pointer-events: none;
 }
+
 @keyframes retroGlow {
     0% { opacity: 0.3; transform: translateY(-10%); }
     50% { opacity: 0.5; transform: translateY(0); }
     100% { opacity: 0.3; transform: translateY(10%); }
 }
+
+/* 3D Stop Sharing Button */
 #stop-sharing-btn {
-    background: #ff4444;
+    background: var(--button-base);
     color: var(--background);
-    border: none;
+    border: 2px solid var(--button-hover);
     padding: 0.75rem 1.5rem;
     border-radius: 0.625rem;
     cursor: pointer;
@@ -140,12 +158,16 @@ header h1 {
     font-weight: 600;
     margin: 1rem auto;
     display: none;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
     transition: transform 0.3s ease, background 0.3s ease;
 }
+
 #stop-sharing-btn:hover {
-    transform: translateY(-0.125rem);
-    background: #e03c3c;
+    transform: translate(2px, 2px);
+    background: var(--button-hover);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
@@ -154,6 +176,7 @@ header h1 {
     margin: 0 auto;
     padding: 1rem 0;
 }
+
 .feature-card {
     background: var(--glass);
     backdrop-filter: blur(0.5rem);
@@ -167,16 +190,20 @@ header h1 {
     transform-origin: center;
     z-index: 10;
 }
+
 .feature-card:hover {
     transform: scale(1.05);
 }
+
 .feature-card.enlarging {
     animation: expandRefined 1s ease-in-out forwards;
 }
+
 @keyframes expandRefined {
     0% { transform: scale(1); }
     100% { transform: scale(1.2, 3); }
 }
+
 .feature-card::before {
     content: '';
     position: absolute;
@@ -189,72 +216,85 @@ header h1 {
     transition: all 0.6s ease;
     z-index: -1;
 }
+
 .feature-card:hover::before {
     transform: rotate(0deg) scale(1.2);
 }
+
 .feature-card i {
     font-size: 2rem;
     color: var(--accent);
     margin-bottom: 0.75rem;
     transition: transform 0.4s ease;
 }
+
 .feature-card:hover i {
     transform: scale(1.2);
 }
+
 .feature-card p {
     font-size: 1rem;
     font-weight: 500;
     color: var(--text);
     transition: transform 0.4s ease;
 }
+
 .feature-card:hover p {
     transform: translateY(0.3rem);
 }
+
 .form-container {
-    background: var(--glass);
-    backdrop-filter: blur(0.75rem);
-    border: 0.0625rem solid var(--accent);
+    background: var(--background);
+    border: 2px solid var(--accent);
     padding: 1.5rem;
-    border-radius: 1.25rem;
+    border-radius: 0.625rem;
     margin: 2rem auto;
     width: 90%;
     max-width: 25rem;
-    position: relative;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
     transition: transform 0.3s ease;
 }
+
 .form-container:hover {
-    transform: translateY(-0.125rem);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 .form-container h2 {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: var(--text);
 }
+
 .form-container input {
     width: 100%;
     padding: 0.75rem;
     margin: 0.5rem 0;
-    border: none;
+    border: 1px solid var(--accent);
     border-radius: 0.625rem;
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--background);
     color: var(--text);
     font-size: 0.9375rem;
     transition: all 0.3s ease;
 }
+
 .form-container input:focus {
-    background: rgba(255, 255, 255, 0.7);
     outline: none;
+    border-color: var(--button-hover);
     transform: scale(1.02);
 }
+
 .form-container input::placeholder {
     color: var(--text);
     opacity: 0.6;
 }
+
+/* 3D Button Style for Form Buttons */
 .form-container button {
-    background: var(--accent);
+    background: var(--button-base);
     color: var(--background);
-    border: none;
+    border: 2px solid var(--button-hover);
     padding: 0.75rem;
     width: 100%;
     border-radius: 0.625rem;
@@ -262,171 +302,180 @@ header h1 {
     font-size: 1rem;
     font-weight: 600;
     margin-top: 1rem;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
-.form-container button::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
-    opacity: 0;
-    transition: all 0.6s ease;
-}
-.form-container button:hover::after {
-    opacity: 1;
-    transform: scale(1.5);
-}
+
 .form-container button:hover {
-    transform: translateY(-0.1875rem);
+    transform: translate(2px, 2px);
+    background: var(--button-hover);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 .switch-link {
     margin-top: 1rem;
     text-align: center;
     font-size: 0.875rem;
     color: var(--text);
 }
+
 .switch-link a {
     color: var(--accent);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
 }
+
 .switch-link a:hover {
     text-decoration: underline;
 }
+
 #signup .form-container,
 #signin .form-container,
 #profile .profile-container {
-    background: var(--boxy-background);
-    border: 2px solid var(--boxy-accent);
-    border-radius: 0;
+    background: var(--background);
+    border: 2px solid var(--accent);
+    border-radius: 0.625rem;
     padding: 2rem;
     margin: 2rem auto;
+    margin-top: 0rem;
     width: 90%;
     max-width: 30rem;
-    box-shadow: 8px 8px 0 var(--boxy-shadow-dark), -8px -8px 0 var(--boxy-shadow-light);
+    box-shadow: 8px 8px 0 var(--button-shadow-dark), -8px -8px 0 var(--button-shadow-light);
     transition: transform 0.3s ease;
 }
+
 #signup .form-container:hover,
 #signin .form-container:hover,
 #profile .profile-container:hover {
     transform: translate(4px, 4px);
-    box-shadow: 4px 4px 0 var(--boxy-shadow-dark), -4px -4px 0 var(--boxy-shadow-light);
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
 }
+
 #signup .form-container h2,
 #signin .form-container h2,
 #profile .profile-container h2 {
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    color: var(--boxy-text);
+    color: var(--text);
     text-transform: uppercase;
     text-align: center;
 }
+
 #signup .form-container input,
 #signin .form-container input,
 #profile .profile-field input {
     width: 100%;
     padding: 1rem;
     margin: 0.75rem 0;
-    border: 2px solid var(--boxy-accent);
-    border-radius: 0;
-    background: var(--boxy-background);
-    color: var(--boxy-text);
+    border: 2px solid var(--accent);
+    border-radius: 0.625rem;
+    background: var(--background);
+    color: var(--text);
     font-size: 1rem;
     transition: border-color 0.3s ease;
 }
+
 #signup .form-container input:focus,
 #signin .form-container input:focus,
 #profile .profile-field input:focus {
     outline: none;
-    border-color: var(--boxy-highlight);
+    border-color: var(--button-hover);
 }
+
 #signup .form-container input::placeholder,
 #signin .form-container input::placeholder,
 #profile .profile-field input::placeholder {
-    color: var(--boxy-highlight);
+    color: var(--text);
     opacity: 0.6;
 }
+
+/* 3D Buttons for Signup, Signin, Profile */
 #signup .form-container button,
 #signin .form-container button,
 #profile .profile-field button,
 #profile .profile-action button {
-    background: var(--boxy-accent);
-    color: var(--boxy-text);
-    border: 2px solid var(--boxy-highlight);
+    background: var(--button-base);
+    color: var(--background);
+    border: 2px solid var(--button-hover);
     padding: 1rem;
     width: 100%;
-    border-radius: 0;
+    border-radius: 0.625rem;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
     margin-top: 1rem;
-    box-shadow: 4px 4px 0 var(--boxy-shadow-dark), -4px -4px 0 var(--boxy-shadow-light);
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
     transition: transform 0.3s ease, background 0.3s ease;
 }
+
 #signup .form-container button:hover,
 #signin .form-container button:hover,
 #profile .profile-field button:hover,
 #profile .profile-action button:hover {
-    background: var(--boxy-highlight);
+    background: var(--button-hover);
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--boxy-shadow-dark), -2px -2px 0 var(--boxy-shadow-light);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 #signup .switch-link,
 #signin .switch-link {
     margin-top: 1.5rem;
     text-align: center;
     font-size: 0.95rem;
-    color: var(--boxy-highlight);
+    color: var(--text);
 }
+
 #signup .switch-link a,
 #signin .switch-link a {
-    color: var(--boxy-text);
+    color: var(--accent);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
+
 #signup .switch-link a:hover,
 #signin .switch-link a:hover {
-    color: var(--boxy-accent);
+    color: var(--button-hover);
 }
+
 #profile .profile-container p {
     font-size: 0.95rem;
-    color: var(--boxy-text);
+    color: var(--text);
     margin: 0.75rem 0;
     padding: 0.75rem;
-    background: var(--boxy-background);
-    border: 1px solid var(--boxy-accent);
-    border-radius: 0;
+    background: var(--background);
+    border: 1px solid var(--accent);
+    border-radius: 0.625rem;
 }
+
 #profile .profile-field {
     margin-bottom: 0.75rem;
 }
+
+/* 3D Signout Button */
 #profile #signout-btn {
-    background: transparent;
-    color: var(--boxy-highlight);
-    border: 2px solid var(--boxy-accent);
+    background: var(--button-base);
+    color: var(--background);
+    border: 2px solid var(--button-hover);
     padding: 1rem 1.5rem;
-    border-radius: 0;
+    border-radius: 0.625rem;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
     margin: 0.75rem 0;
     width: 100%;
-    box-shadow: 4px 4px 0 var(--boxy-shadow-dark), -4px -4px 0 var(--boxy-shadow-light);
-    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
+
 #profile #signout-btn:hover {
-    background: var(--boxy-accent);
+    background: var(--button-hover);
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--boxy-shadow-dark), -2px -2px 0 var(--boxy-shadow-light);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 #map {
     height: 60vh;
     width: 90%;
@@ -435,35 +484,43 @@ header h1 {
     border: 0.0625rem solid var(--accent);
     transition: transform 0.3s ease;
 }
+
 #map:hover {
     transform: scale(1.01);
 }
+
+/* Centered Flat Navbar */
 nav {
     position: fixed;
-    bottom: 0.6rem;
-    left: 0;
-    transform: none;
-    background: var(--boxy-background);
-    border: 2px solid var(--boxy-accent);
-    border-radius: 0;
-    padding: 0.3rem 0.6rem;
-    display: flex;
-    gap: 0.6rem;
-    z-index: 100;
-    width: 100%;
-    max-width: none;
-    justify-content: space-around;
-    box-shadow: 3.6px 3.6px 0 var(--boxy-shadow-dark), -3.6px -3.6px 0 var(--boxy-shadow-light);
-    transition: transform 0.3s ease;
+bottom: 0.6rem;
+left: 50%;
+transform: translateX(-50%);
+background: rgba(16, 15, 15, 0.55);
+border: 1px solid rgba(255, 255, 255, 0.18);
+border-radius: 10px;
+padding: 0.3rem 0.6rem;
+display: flex;
+gap: 0.6rem;
+z-index: 100;
+width: 90%; /* Let content determine width */
+max-width: 90%; /* Prevent overflow on small screens */
+justify-content: space-around;
+background: rgba(255, 255, 255, 0.55);
+box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border-radius: 10px;
+border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
 nav:hover {
-    transform: translateY(2.4px);
-    box-shadow: 2.4px 2.4px 0 var(--boxy-shadow-dark), -2.4px -2.4px 0 var(--boxy-shadow-light);
+    background: rgba(255, 255, 255, 0.9);
 }
+
 nav button {
     background: none;
     border: none;
-    color: var(--boxy-highlight);
+    color: var(--text);
     font-size: 0.72rem;
     cursor: pointer;
     display: flex;
@@ -474,19 +531,23 @@ nav button {
     text-transform: uppercase;
     transition: color 0.3s ease, transform 0.3s ease;
 }
+
 nav button i {
     font-size: 1.2rem;
     transition: transform 0.3s ease;
 }
+
 nav button:hover,
 nav button.active {
-    color: var(--boxy-text);
+    color: var(--button-hover);
     transform: translateY(-1.2px);
 }
+
 nav button:hover i,
 nav button.active i {
     transform: scale(1.1);
 }
+
 nav button::before {
     content: '';
     position: absolute;
@@ -494,13 +555,15 @@ nav button::before {
     left: 50%;
     width: 0;
     height: 1.2px;
-    background: var(--boxy-highlight);
+    background: var(--button-hover);
     transition: width 0.3s ease;
     transform: translateX(-50%);
 }
+
 nav button.active::before {
     width: 50%;
 }
+
 #route-instructions {
     background: var(--glass);
     backdrop-filter: blur(0.75rem);
@@ -513,9 +576,11 @@ nav button.active::before {
     overflow-y: auto;
     transition: transform 0.3s ease;
 }
+
 #route-instructions:hover {
     transform: translateY(-0.125rem);
 }
+
 .location-inputs {
     display: flex;
     flex-direction: column;
@@ -524,25 +589,30 @@ nav button.active::before {
     width: 90%;
     max-width: 25rem;
 }
+
 .location-input {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--background);
     border: 0.0625rem solid var(--accent);
     border-radius: 0.75rem;
     transition: all 0.3s ease;
 }
+
 .location-input:hover {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.9);
 }
+
 .location-input i {
     padding: 0.75rem;
     color: var(--accent);
     transition: transform 0.3s ease;
 }
+
 .location-input:hover i {
     transform: scale(1.1);
 }
+
 .location-input input {
     flex: 1;
     border: none;
@@ -552,14 +622,17 @@ nav button.active::before {
     font-size: 0.9375rem;
     transition: all 0.3s ease;
 }
+
 .location-input input:focus {
     outline: none;
     background: rgba(255, 255, 255, 0.7);
 }
+
+/* 3D Route and Current Location Buttons */
 .route-btn, #current-location-btn {
-    background: var(--accent);
+    background: var(--button-base);
     color: var(--background);
-    border: none;
+    border: 2px solid var(--button-hover);
     padding: 0.75rem;
     width: 90%;
     max-width: 25rem;
@@ -567,34 +640,23 @@ nav button.active::before {
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    transition: all 0.4s ease;
     margin: 0.5rem auto;
-    position: relative;
-    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
+
 .route-btn:disabled, #current-location-btn:disabled {
-    background: var(--text);
+    background: var(--button-base);
     cursor: not-allowed;
     opacity: 0.6;
 }
-.route-btn::after, #current-location-btn::after {
-    content: '';
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, transparent 70%);
-    top: -50%;
-    left: -50%;
-    opacity: 0;
-    transition: all 0.6s ease;
-}
-.route-btn:hover:not(:disabled)::after, #current-location-btn:hover:not(:disabled)::after {
-    opacity: 1;
-    transform: scale(1.5);
-}
+
 .route-btn:hover:not(:disabled), #current-location-btn:hover:not(:disabled) {
-    transform: translateY(-0.1875rem);
+    transform: translate(2px, 2px);
+    background: var(--button-hover);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 #popup-overlay {
     position: fixed;
     inset: 0;
@@ -607,33 +669,40 @@ nav button.active::before {
     transition: all 0.4s ease;
     backdrop-filter: blur(0.25rem);
 }
+
 #popup-overlay.active {
     opacity: 1;
     visibility: visible;
 }
+
 #popup-box {
     background: var(--background);
-    border-radius: 1.25rem;
+    border-radius: 0.625rem;
     padding: 1.5rem;
     width: 90%;
-    max-width: 25rem; /* Increased for SOS popup */
+    max-width: 25rem;
     transform: scale(0.8);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 0.0625rem solid var(--accent);
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
 }
+
 #popup-overlay.active #popup-box {
     transform: scale(1);
 }
+
 #popup-message {
     font-size: 0.9375rem;
     margin-bottom: 1rem;
     color: var(--text);
     line-height: 1.5;
 }
+
 #popup-box.sos-alert {
-    background: #ffe6e6; /* Light red background for SOS */
+    background: #ffe6e6;
     border-color: var(--retro-red);
 }
+
 #popup-box.sos-alert h3 {
     font-size: 1.25rem;
     font-weight: 700;
@@ -641,100 +710,128 @@ nav button.active::before {
     margin-bottom: 0.75rem;
     text-align: center;
 }
+
 #popup-box.sos-alert p {
     font-size: 0.9375rem;
     color: var(--text);
     margin: 0.5rem 0;
 }
-#popup-box.sos-alert .popup-actions {
+
+.popup-actions {
     display: flex;
     gap: 0.5rem;
     margin-top: 1rem;
     justify-content: center;
 }
+
+/* 3D Popup Buttons */
 #popup-close-btn {
-    background: var(--accent);
+    background: var(--button-base);
     color: var(--background);
-    border: none;
+    border: 2px solid var(--button-hover);
     padding: 0.75rem 1.5rem;
     border-radius: 0.625rem;
     cursor: pointer;
     font-size: 0.9375rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-    width: 48%; /* Adjusted for side-by-side buttons */
+    width: 48%;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
+
 #popup-close-btn:hover {
-    transform: scale(1.05);
+    transform: translate(2px, 2px);
+    background: var(--button-hover);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 #popup-navigate-btn {
-    background: var(--retro-red);
+    background: var(--button-base);
     color: var(--background);
-    border: none;
+    border: 2px solid var(--button-hover);
     padding: 0.75rem 1.5rem;
     border-radius: 0.625rem;
     cursor: pointer;
     font-size: 0.9375rem;
     font-weight: 600;
-    transition: all 0.3s ease;
-    width: 48%; /* Adjusted for side-by-side buttons */
+    width: 48%;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
+
 #popup-navigate-btn:hover {
-    transform: scale(1.05);
-    background: var(--retro-dark-red);
+    transform: translate(2px, 2px);
+    background: var(--button-hover);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 #community-page .community-content {
     max-width: 600px;
     margin: 0 auto;
 }
+
 .post-form {
-    background: var(--glass);
+    background: var(--background);
     border: 0.0625rem solid var(--accent);
     padding: 1rem;
     border-radius: 0.75rem;
     margin-bottom: 1rem;
+    margin-top: 2rem;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
     transition: transform 0.3s ease;
 }
+
 .post-form:hover {
-    transform: translateY(-0.125rem);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 .post-form textarea {
     width: 100%;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
-    border: none;
+    border: 1px solid var(--accent);
     border-radius: 0.5rem;
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--background);
     color: var(--text);
     font-size: 0.9375rem;
     resize: vertical;
     min-height: 80px;
     transition: all 0.3s ease;
 }
+
 .post-form textarea:focus {
-    background: rgba(255, 255, 255, 0.7);
     outline: none;
+    border-color: var(--button-hover);
 }
+
+/* 3D Post Button */
 .post-form button {
-    background: var(--accent);
+    background: var(--button-base);
     color: var(--background);
-    border: none;
+    border: 2px solid var(--button-hover);
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 600;
-    transition: all 0.3s ease;
     float: right;
+    box-shadow: 4px 4px 0 var(--button-shadow-dark), -4px -4px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
 }
+
 .post-form button:hover {
-    transform: translateY(-0.125rem);
+    transform: translate(2px, 2px);
+    background: var(--button-hover);
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
 }
+
 .posts-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
+
 .post-item {
     background: var(--glass);
     padding: 1rem;
@@ -743,36 +840,43 @@ nav button.active::before {
     position: relative;
     transition: transform 0.3s ease;
 }
+
 .post-item:hover {
     transform: translateY(-0.125rem);
 }
+
 .post-item p {
     font-size: 0.9375rem;
     color: var(--text);
 }
+
 .post-item span {
     font-size: 0.75rem;
     color: rgba(0, 0, 0, 0.6);
     display: block;
     margin-top: 0.5rem;
 }
+
+/* 3D Remove Button */
 .post-item .remove-btn {
-    background: transparent;
-    color: red;
-    border: 1px solid red;
+    background: var(--button-base);
+    color: var(--background);
+    border: 2px solid var(--button-hover);
     padding: 0.25rem 0.5rem;
     border-radius: 0.5rem;
     cursor: pointer;
     font-size: 0.75rem;
     font-weight: 600;
-    transition: all 0.3s ease;
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
+    box-shadow: 2px 2px 0 var(--button-shadow-dark), -2px -2px 0 var(--button-shadow-light);
+    transition: transform 0.3s ease, background 0.3s ease;
     display: none;
 }
+
 .post-item .remove-btn:hover {
-    background: red;
-    color: var(--background);
-    transform: translateY(-0.125rem);
+    transform: translate(1px, 1px);
+    background: var(--button-hover);
+    box-shadow: 1px 1px 0 var(--button-shadow-dark), -1px -1px 0 var(--button-shadow-light);
 }

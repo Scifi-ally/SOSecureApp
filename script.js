@@ -6,27 +6,48 @@ function showPopup(message, isSosAlert = false, sosData = null) {
     const popupOverlay = document.getElementById('popup-overlay');
     const popupBox = document.getElementById('popup-box');
     const popupMessage = document.getElementById('popup-message');
-    const navigateBtn = document.getElementById('popup-navigate-btn');
+
+    // Clear existing content and ensure the message div is present
+    popupBox.innerHTML = '<div id="popup-message"></div>';
+    const newPopupMessage = document.getElementById('popup-message'); // Re-query after reset
 
     if (isSosAlert && sosData) {
         popupBox.classList.add('sos-alert');
-        popupMessage.innerHTML = `
+        newPopupMessage.innerHTML = `
             <h3>SOS Alert</h3>
             <p><strong>From:</strong> ${sosData.senderName}</p>
             <p><strong>Location:</strong> Lat: ${sosData.location.lat}, Lng: ${sosData.location.lng}</p>
             <p><strong>Time:</strong> ${new Date(sosData.timestamp.toDate()).toLocaleString()}</p>
-            <div class="popup-actions">
-                <button id="popup-close-btn">Close</button>
-                <button id="popup-navigate-btn" onclick="navigateToSosLocation(${sosData.location.lat}, ${sosData.location.lng})">Navigate</button>
-            </div>
         `;
-        navigateBtn.style.display = 'block'; // Show navigate button for SOS
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'popup-actions';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'Close';
+        closeBtn.id = 'popup-close-btn';
+        closeBtn.addEventListener('click', hidePopup);
+
+        const navigateBtn = document.createElement('button');
+        navigateBtn.textContent = 'Navigate';
+        navigateBtn.id = 'popup-navigate-btn';
+        navigateBtn.addEventListener('click', () => navigateToSosLocation(sosData.location.lat, sosData.location.lng));
+
+        actionsDiv.appendChild(closeBtn);
+        actionsDiv.appendChild(navigateBtn);
+        popupBox.appendChild(actionsDiv);
     } else {
         popupBox.classList.remove('sos-alert');
-        popupMessage.textContent = message;
-        navigateBtn.style.display = 'none'; // Hide navigate button for non-SOS popups
+        newPopupMessage.textContent = message;
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'Close';
+        closeBtn.id = 'popup-close-btn';
+        closeBtn.addEventListener('click', hidePopup);
+        popupBox.appendChild(closeBtn);
     }
 
+    // Ensure the popup is visible
     popupOverlay.classList.add('active');
 }
 
@@ -34,8 +55,6 @@ function hidePopup() {
     const popupOverlay = document.getElementById('popup-overlay');
     popupOverlay.classList.remove('active');
 }
-
-document.getElementById('popup-close-btn').addEventListener('click', hidePopup);
 
 const firebaseConfig = {
     apiKey: "AIzaSyDxmmnQMTfoTBGarz65NdHm1t3NyxWM-rE",
@@ -56,11 +75,18 @@ let directionsService;
 let directionsRenderer;
 let currentLocationMarker;
 
-function initMap() {
+// Define initMap globally
+window.initMap = function() {
+    console.log("Google Maps API loaded");
+};
+
+function initializeMap() {
     if (!window.google || !window.google.maps) {
         showPopup('Google Maps API failed to load. Please refresh the page.');
         return;
     }
+
+    if (isMapInitialized) return;
 
     const defaultLocation = { lat: -34.397, lng: 150.644 };
 
@@ -197,18 +223,16 @@ function navigateToSosLocation(lat, lng) {
         return;
     }
 
-    // Set the SOS location as the destination
     document.getElementById('end-location').value = `${lat}, ${lng}`;
 
-    // Get current location as the start point and calculate route
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
                 document.getElementById('start-location').value = `${userLocation.lat}, ${userLocation.lng}`;
-                showPage('map-page'); // Switch to map page
-                calculateSafeRoute(); // Start navigation
-                hidePopup(); // Close the popup
+                showPage('map-page');
+                calculateSafeRoute();
+                hidePopup();
             },
             (error) => {
                 let errorMessage = 'Unable to retrieve your location for navigation.';
@@ -256,7 +280,7 @@ function showPage(pageId) {
     targetPage.classList.add('active');
     setTimeout(() => targetPage.style.opacity = '1', 50);
     updateNav(pageId);
-    if (pageId === 'map-page' && !isMapInitialized) initMap();
+    if (pageId === 'map-page' && !isMapInitialized) initializeMap();
     if (pageId === 'map-page') updateMapWithSharedLocation();
     if (pageId === 'community-page') loadCommunityPosts();
 }
@@ -584,9 +608,12 @@ function signOut() {
     }
     auth.signOut()
         .then(() => {
-            showPopup('Signed out successfully!');
-            document.getElementById('navbar').style.display = 'none';
-            showPage('signin');
+            hidePopup(); // Hide any existing popup
+            setTimeout(() => { // Delay the page transition to allow popup to display
+                document.getElementById('navbar').style.display = 'none';
+                showPage('signin');
+                hidePopup(); // Hide popup after transition
+            }, 1500); // 1.5 seconds delay
         })
         .catch((error) => showPopup('Error signing out: ' + error.message));
 }
@@ -689,7 +716,7 @@ function listenForSosEvents(userId) {
             snapshot.docChanges().forEach((change) => {
                 if (change.type === 'added') {
                     const sosData = change.doc.data();
-                    showPopup(null, true, sosData); // Pass SOS data to enhanced popup
+                    showPopup(null, true, sosData);
                 }
             });
         }, (error) => {
